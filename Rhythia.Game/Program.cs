@@ -1,2 +1,13 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using System;
+
+using Rhythia.Content.Beatmaps;
+
+namespace Rhythia.Game;
+
+public class Program
+{
+    static void Main(string[] args)
+    {
+
+    }
+}

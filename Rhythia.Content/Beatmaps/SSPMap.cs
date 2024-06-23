@@ -1,0 +1,149 @@
+using System.Text;
+
+namespace Rhythia.Content.Beatmaps;
+
+struct DataOffsets {
+    public ulong CustomDataOffset;
+    public ulong MarkerOffset;
+    public ulong AudioOffset;
+    public ulong AudioLength;
+}
+
+enum BlockOffsets {
+    Magic = 0x0,
+    Version = 0x4,
+    NoteCount = 0x22,
+    Difficulty = 0x2a,
+    DataOffsets = 0x30,
+    MarkerOffset = 0x70,
+    IdOffset = 0x80,
+};
+
+class SSPMapParser {
+    int Index;
+    byte[] Buffer;
+
+    public SSPMapParser(byte[] buffer) {
+        Buffer = buffer;
+        Index = 0;
+    }
+
+    public DataOffsets GetDataOffsets() {
+        Index = (int)BlockOffsets.DataOffsets;
+
+        var offsets = new DataOffsets();
+        
+        offsets.CustomDataOffset = Read64();
+        Index += 0x8; // skip custom data byte length
+
+        offsets.AudioOffset = Read64();
+        offsets.AudioLength = Read64();
+
+        Index = (int)BlockOffsets.MarkerOffset;
+        offsets.MarkerOffset = Read64();
+
+        return offsets;
+    }
+
+    public bool VerifySignature() {
+        Index = (int)BlockOffsets.Magic;
+        return "SS+m"u8.ToArray().SequenceEqual([Read8(), Read8(), Read8(), Read8()]);
+    }
+
+    public ushort GetVersion() {
+        Index = (int)BlockOffsets.Version;
+        return Read8();
+    }
+
+    public string GetTitle() {
+        Index = (int)BlockOffsets.IdOffset;
+        var titleOffset = (int)BlockOffsets.IdOffset + Read16() + 0x2;
+        Index = titleOffset;
+        return ReadString();
+    }
+
+    public string[] GetMappers() {
+        Index = (int)BlockOffsets.IdOffset;
+        var titleOffset = (int)BlockOffsets.IdOffset + Read16() + 0x2;
+        Index = titleOffset;
+        var mappersOffset = titleOffset + Read16() + 0x2;
+        Index = mappersOffset;
+
+        ReadString(); // skip over song name
+
+        var mapperCount = Read16();
+        var mappers = new string[mapperCount];
+        
+        for(int i = 0; i < mapperCount; i++) {
+            mappers[i] = ReadString();
+        }
+
+        return mappers;
+    }
+
+    byte Read8() {
+        return Buffer[Index++];
+    }
+
+    ushort Read16() {
+        Index += 2;
+        return BitConverter.ToUInt16(Buffer, Index - 2);
+    }
+
+    uint Read32() {
+        Index += 4;
+        return BitConverter.ToUInt32(Buffer, Index - 4);
+    }
+
+    ulong Read64() {
+        Index += 8;
+        return BitConverter.ToUInt64(Buffer, Index - 8);
+    }
+
+    void ReadExact(ref byte[] bytes) {
+        for(int i = 0; i < bytes.Length; i++) {
+            bytes[i] = Read8();
+        }
+    }
+
+    string ReadString() {
+        var len = Read16();
+        var stringBuffer = new byte[len];
+        ReadExact(ref stringBuffer);
+        return Encoding.UTF8.GetString(stringBuffer);
+    }
+
+    string ReadStringLong() {
+        var len = Read32();
+        var stringBuffer = new byte[len];
+        ReadExact(ref stringBuffer);
+        return Encoding.UTF8.GetString(stringBuffer);
+    }
+}
+
+public class SSPMap : IBeatmapSet
+{
+    public ushort Version { get; set; }
+    public string Title { get; set; }
+    public string Artist { get; set; }
+    public string[] Mappers { get; set; }
+    public Beatmap[] Difficulties { get; set; } 
+    public string Path { get; set; }
+
+    public SSPMap(string path) {
+        var mapBuffer = File.ReadAllBytes(path);
+        var parser = new SSPMapParser(mapBuffer);
+
+        if(!parser.VerifySignature()) {
+            throw new FileLoadException("Failed to verify file signature");
+        }
+
+        Version = parser.GetVersion();
+        if(Version != 2) {
+            throw new FileLoadException("Invalid map version, only supports sspmv2 for now.");
+        }
+
+        Title = parser.GetTitle();
+        Mappers = parser.GetMappers();
+    }
+}
