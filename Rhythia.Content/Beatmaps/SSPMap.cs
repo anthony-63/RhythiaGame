@@ -1,3 +1,4 @@
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 
 namespace Rhythia.Content.Beatmaps;
@@ -23,9 +24,12 @@ class SSPMapParser {
     int Index;
     byte[] Buffer;
 
+    DataOffsets DataOffsets;
+
     public SSPMapParser(byte[] buffer) {
         Buffer = buffer;
         Index = 0;
+        DataOffsets = GetDataOffsets();
     }
 
     public DataOffsets GetDataOffsets() {
@@ -81,6 +85,63 @@ class SSPMapParser {
         return mappers;
     }
 
+    public string GetDifficultyName() {
+        Index = (int)DataOffsets.CustomDataOffset;
+
+        var customDataCount = Read16();
+        if(customDataCount < 1) return "";
+
+        ReadString();
+
+        var dataType = Read8();
+        if(dataType == 0x09) {
+            return ReadString();
+        } else if(dataType == 0x0b) {
+            return ReadStringLong();
+        } else {
+            throw new FileLoadException("Invalid data type for difficulty name");
+        }
+    }
+
+    Note[] GetNotes() {
+        Index = (int)BlockOffsets.NoteCount;
+        var noteCount = Read32();
+
+        Index = (int)DataOffsets.MarkerOffset;
+
+        var notes = new Note[noteCount];
+
+        for(int i = 0; i < noteCount; i++) {
+            var time = Read32() / 1000.0f;
+
+            Read8(); // always 1. why??? so dumb!
+
+            var hasQuantum = Read8() == 1;
+            if(hasQuantum) {
+                notes[i] = new Note {
+                    Time = time,
+                    X = ReadFloat(),
+                    Y = ReadFloat(),
+                };
+            } else {
+                notes[i] = new Note {
+                    Time = time,
+                    X = Read8(),
+                    Y = Read8(),
+                };
+            }
+        }
+
+        return notes;
+    }
+
+    public Beatmap GetBeatmapFromData() {
+        return new Beatmap {
+            Name = GetDifficultyName(),
+            Notes = GetNotes(),
+        };
+    }
+
     byte Read8() {
         return Buffer[Index++];
     }
@@ -98,6 +159,11 @@ class SSPMapParser {
     ulong Read64() {
         Index += 8;
         return BitConverter.ToUInt64(Buffer, Index - 8);
+    }
+
+    float ReadFloat() {
+        Index += 4;
+        return BitConverter.ToSingle(Buffer, Index - 4);
     }
 
     void ReadExact(ref byte[] bytes) {
@@ -125,7 +191,7 @@ public class SSPMap : IBeatmapSet
 {
     public ushort Version { get; set; }
     public string Title { get; set; }
-    public string Artist { get; set; }
+    public string Artist { get; set; } = "";
     public string[] Mappers { get; set; }
     public Beatmap[] Difficulties { get; set; } 
     public string Path { get; set; }
@@ -145,5 +211,7 @@ public class SSPMap : IBeatmapSet
 
         Title = parser.GetTitle();
         Mappers = parser.GetMappers();
+        Difficulties = [parser.GetBeatmapFromData()];
+        Path = path;
     }
 }

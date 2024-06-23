@@ -1,7 +1,7 @@
 namespace Rhythia.Content.Beatmaps;
 
 public struct Note {
-    float X;
-    float Y;
-    float Time;
+    public float X;
+    public float Y;
+    public float Time;
 }
