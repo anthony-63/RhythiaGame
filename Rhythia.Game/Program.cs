@@ -11,6 +11,6 @@ public class Program
     {
         var window = new Window(1280, 720, "NewRhythia");
         window.SceneHandler.AddScene(new GameScene());
-        // window.Run();
+        window.Run();
     }
 }
