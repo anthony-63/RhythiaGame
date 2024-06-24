@@ -5,6 +5,7 @@ public class SceneHandler
     List<IScene> Scenes = [];
 
     List<IScene> RemovalQueue = [];
+    List<IScene> AddQueue = [];
 
 
     public void UpdateAllScenes(Window window, double dt)
@@ -14,6 +15,12 @@ public class SceneHandler
 
         foreach(var scene in RemovalQueue)
             Scenes.Remove(scene);
+
+        foreach(var scene in AddQueue)
+            Scenes.Add(scene);
+
+        AddQueue.Clear();
+        RemovalQueue.Clear();
     }
 
     public void RenderAllScenes(Window window)
@@ -27,7 +34,7 @@ public class SceneHandler
     }
 
     public void AddScene(IScene scene) {
-        Scenes.Add(scene);
+        AddQueue.Add(scene);
     }
 
     public void RemoveSceneByType<T>() where T : IScene
