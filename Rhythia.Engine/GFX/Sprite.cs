@@ -8,7 +8,8 @@ public class Sprite
     public Vector3 Position;
     public Vector3 Rotation;
     public Vector2 Size;
-    public Model Model;
+    public Mesh Mesh;
+    public Material Material;
     
     public static Sprite MakePlane(Vector3 position, Vector3 rotation, Vector2 size, string texturePath)
     {
@@ -19,27 +20,27 @@ public class Sprite
             Size = size,
         };
 
-        Model model = Raylib.LoadModelFromMesh(Raylib.GenMeshPlane(size.X, size.Y, 1, 1));
-
         Image img = Raylib.LoadImage(texturePath);
         Texture2D texture = Raylib.LoadTextureFromImage(img);
         
         Raylib.UnloadImage(img);
 
-        Raylib.SetMaterialTexture(ref model, 0, MaterialMapIndex.Diffuse, ref texture);
+        Material material = Raylib.LoadMaterialDefault();
 
-        sprite.Model = model;
+        Raylib.SetMaterialTexture(ref material, 0, texture);
+
+        sprite.Mesh = Raylib.GenMeshPlane(size.X, size.Y, 1, 1);
+        sprite.Material  = material;
 
         return sprite;
     }
 
     public void Render()
     {
-        Rlgl.PushMatrix();
-        Rlgl.Rotatef(Rotation.X, 1f, 0f, 0f);
-        Rlgl.Rotatef(Rotation.Y, 0f, 1f, 0f);
-        Rlgl.Rotatef(Rotation.Z, 0f, 0f, 1f);
-        Raylib.DrawModel(Model, Position, 1, Color.White);
-        Rlgl.PopMatrix();
+        var transform = Matrix4x4.CreateTranslation(Position);
+        transform = Matrix4x4.Multiply(transform, Matrix4x4.CreateRotationX(Raylib.DEG2RAD * Rotation.X));
+        transform = Matrix4x4.Multiply(transform, Matrix4x4.CreateRotationY(Raylib.DEG2RAD * Rotation.Y));
+        transform = Matrix4x4.Multiply(transform, Matrix4x4.CreateRotationZ(Raylib.DEG2RAD * Rotation.Z));
+        Raylib.DrawMesh(Mesh, Material, transform);
     }
 }
