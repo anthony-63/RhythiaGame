@@ -10,6 +10,7 @@ public class Window
 
     public Window(int width, int height, string title)
     {
+        Raylib.InitAudioDevice();
         Raylib.InitWindow(width, height, title);
     }
 
