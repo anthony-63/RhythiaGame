@@ -17,6 +17,7 @@ public class Window : GameWindow
 
     protected override void OnLoad()
     {
+        GL.Enable(EnableCap.DepthTest);
         GL.ClearColor(Color4.Black);
     }
 
@@ -41,5 +42,6 @@ public class Window : GameWindow
     {
         base.OnFramebufferResize(e);
         GL.Viewport(0, 0, e.Width, e.Height);
+        
     }
 }
