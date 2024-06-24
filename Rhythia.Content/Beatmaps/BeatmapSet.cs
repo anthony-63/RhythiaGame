@@ -1,5 +1,6 @@
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection.Metadata.Ecma335;
 using System.Runtime.InteropServices;
 using System.Text.Json;
@@ -14,6 +15,8 @@ public class BeatmapSet : IBeatmapSet
     public string Artist { get; set; } = "";
     public string[] Mappers { get; set; } = new string[0];
     public Beatmap[] Difficulties { get; set; } = new Beatmap[0];
+
+    public byte[] AudioData { get; set; }
     
     public string Path { get; set; } = "";
 
@@ -26,7 +29,12 @@ public class BeatmapSet : IBeatmapSet
         Version = metaDoc.RootElement.GetProperty("_version").GetUInt16();
         Title = metaDoc.RootElement.GetProperty("_title").GetString() ?? throw new JsonException("Failed to parse _title");
         Mappers = metaDoc.RootElement.GetProperty("_mappers").EnumerateArray().Select(elem => elem.GetString() ?? throw new JsonException("Failed to parse _mappers")).ToArray();
+
+        AudioData = File.ReadAllBytes(folderPath + "/" + metaDoc.RootElement.GetProperty("_music").GetString() ?? throw new JsonException("Failed to parse _music"));
+
         Difficulties = GetDifficulties(metaDoc.RootElement.GetProperty("_difficulties").EnumerateArray().Select(elem => elem.GetString() ?? throw new JsonException("Failed to parse _difficulties")).ToArray());
+    
+    
     }
 
     Beatmap[] GetDifficulties(string[] files)

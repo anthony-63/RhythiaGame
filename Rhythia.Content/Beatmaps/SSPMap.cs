@@ -219,6 +219,7 @@ public class SSPMap : IBeatmapSet
     public string[] Mappers { get; set; }
     public Beatmap[] Difficulties { get; set; } 
     public string Path { get; set; }
+    public byte[] AudioData { get; set; } = [];
 
     public SSPMap(string path)
     {

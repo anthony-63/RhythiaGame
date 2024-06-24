@@ -9,6 +9,7 @@ interface IBeatmapSet
 
     Beatmap[] Difficulties { get; set; }
 
+    byte[] AudioData { get; set;}
 
    string Path { get; set; }
 }
