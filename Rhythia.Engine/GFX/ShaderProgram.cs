@@ -1,7 +1,7 @@
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
-namespace Rhythia.Engine.GFX.Shaders;
+namespace Rhythia.Engine.GFX;
 
 public class ShaderProgram
 {
