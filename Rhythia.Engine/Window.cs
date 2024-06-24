@@ -1,3 +1,5 @@
+using OpenTK.Graphics.OpenGL4;
+using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 
@@ -9,12 +11,34 @@ public class Window : GameWindow {
         Scenes = [];
     }
 
+    protected override void OnLoad()
+    {
+        GL.ClearColor(Color4.Black);
+    }
+
     protected override void OnUpdateFrame(FrameEventArgs e)
     {
         base.OnUpdateFrame(e);
         foreach(var scene in Scenes) {
             scene.Update(e.Time);
+        }
+    }
+
+    protected override void OnRenderFrame(FrameEventArgs args)
+    {
+        base.OnRenderFrame(args);
+
+        GL.Clear(ClearBufferMask.ColorBufferBit);
+
+        foreach(var scene in Scenes) {
             scene.Render();
         }
+        SwapBuffers();
+    }
+
+    protected override void OnFramebufferResize(FramebufferResizeEventArgs e)
+    {
+        base.OnFramebufferResize(e);
+        GL.Viewport(0, 0, e.Width, e.Height);
     }
 }
