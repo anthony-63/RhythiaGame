@@ -2,13 +2,17 @@ using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
+using Rhythia.Engine.Scene;
 
 namespace Rhythia.Engine;
 
-public class Window : GameWindow {
-    public IScene[] Scenes;
-    public Window(int width, int height, string title) : base(GameWindowSettings.Default, new NativeWindowSettings() { Size = (width, height), Title = title }) {
-        Scenes = [];
+public class Window : GameWindow
+{
+    public SceneHandler SceneHandler = new SceneHandler();
+
+    public Window(int width, int height, string title) : base(GameWindowSettings.Default, new NativeWindowSettings(){ Size = (width, height), Title = title })
+    {
+
     }
 
     protected override void OnLoad()
@@ -19,9 +23,7 @@ public class Window : GameWindow {
     protected override void OnUpdateFrame(FrameEventArgs e)
     {
         base.OnUpdateFrame(e);
-        foreach(var scene in Scenes) {
-            scene.Update(e.Time);
-        }
+        SceneHandler.UpdateAllScenes(this, e.Time);
     }
 
     protected override void OnRenderFrame(FrameEventArgs args)
@@ -30,9 +32,8 @@ public class Window : GameWindow {
 
         GL.Clear(ClearBufferMask.ColorBufferBit);
 
-        foreach(var scene in Scenes) {
-            scene.Render();
-        }
+        SceneHandler.RenderAllScenes(this);
+
         SwapBuffers();
     }
 
