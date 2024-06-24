@@ -10,7 +10,7 @@ public class Program
     static void Main(string[] args)
     {
         var window = new Window(1280, 720, "NewRhythia");
-        window.SceneHandler.AddScene(new GameScene());
+        window.SceneHandler.AddScene(new LoadingScene());
         window.Run();
     }
 }
