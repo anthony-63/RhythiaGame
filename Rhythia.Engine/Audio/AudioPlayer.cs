@@ -8,20 +8,26 @@ public class AudioPlayer
 
     private byte[] AudioData = {};
 
-    public float Time => Raylib.GetMusicTimeLength(AudioStream);
+    public float Time => Raylib.GetMusicTimePlayed(AudioStream);
     public bool Playing => Raylib.IsMusicStreamPlaying(AudioStream);
 
-    public AudioPlayer(string path, float volume)
+    public float Speed = 1f;
+
+    public AudioPlayer(string path, float volume, float speed = 1f)
     {
         AudioStream = Raylib.LoadMusicStream(path);
         Raylib.SetMusicVolume(AudioStream, volume);
+        Raylib.SetMusicPitch(AudioStream, speed);
+        Speed = speed;
     }
 
-    public AudioPlayer(byte[] data, float volume)
+    public AudioPlayer(byte[] data, float volume, float speed = 1f)
     {
         AudioData = data;
         AudioStream = Raylib.LoadMusicStreamFromMemory(GetFileFormat(AudioData), AudioData);
         Raylib.SetMusicVolume(AudioStream, volume);
+        Raylib.SetMusicPitch(AudioStream, speed);
+        Speed = speed;
     }
 
     public void Play()
