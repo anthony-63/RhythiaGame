@@ -132,8 +132,8 @@ class SSPMapParser
                 notes[i] = new Note
                 {
                     Time = time,
-                    X = ReadFloat(),
-                    Y = ReadFloat(),
+                    X = -(ReadFloat() - 1),
+                    Y = -(ReadFloat() - 1),
                 };
             }
             else
@@ -141,8 +141,8 @@ class SSPMapParser
                 notes[i] = new Note
                 {
                     Time = time,
-                    X = Read8(),
-                    Y = Read8(),
+                    X = -(Read8() - 1),
+                    Y = -(Read8() - 1),
                 };
             }
         }
@@ -155,7 +155,7 @@ class SSPMapParser
         return new Beatmap
         {
             Name = GetDifficultyName(),
-            Notes = GetNotes(),
+            Notes = [.. GetNotes().ToList().OrderBy(n => n.Time)],
         };
     }
 
