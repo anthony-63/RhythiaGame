@@ -33,8 +33,6 @@ public class BeatmapSet : IBeatmapSet
         AudioData = File.ReadAllBytes(folderPath + "/" + metaDoc.RootElement.GetProperty("_music").GetString() ?? throw new JsonException("Failed to parse _music"));
 
         Difficulties = GetDifficulties(metaDoc.RootElement.GetProperty("_difficulties").EnumerateArray().Select(elem => elem.GetString() ?? throw new JsonException("Failed to parse _difficulties")).ToArray());
-    
-    
     }
 
     Beatmap[] GetDifficulties(string[] files)
@@ -50,12 +48,16 @@ public class BeatmapSet : IBeatmapSet
             
             var noteElements = diffDoc.RootElement.GetProperty("_notes").EnumerateArray().ToArray();
             beatmaps[i].Notes = new Note[noteElements.Length];
+
+            int j = 0;
             foreach(JsonElement noteElem in noteElements)
             {
-                beatmaps[i].Notes[i].Time = noteElem.GetProperty("_time").GetSingle();
-                beatmaps[i].Notes[i].X = noteElem.GetProperty("_x").GetSingle();
-                beatmaps[i].Notes[i].Y = noteElem.GetProperty("_y").GetSingle();
+                beatmaps[i].Notes[j].Time = (float)noteElem.GetProperty("_time").GetDouble();
+                beatmaps[i].Notes[j].X = noteElem.GetProperty("_x").GetSingle();
+                beatmaps[i].Notes[j].Y = noteElem.GetProperty("_y").GetSingle();
+                j++;
             }
+            beatmaps[i].Notes = beatmaps[i].Notes.OrderBy(n => n.Time).ToArray();
         }
         return beatmaps;
     }
