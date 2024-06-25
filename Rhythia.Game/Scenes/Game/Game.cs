@@ -13,7 +13,7 @@ public class GameScene : IScene
     public Camera Camera = new Camera(new Vector3(0, 0, 7), 70);
     public Sprite Grid = Sprite.MakePlane(new Vector3(0, 0, 0), new Vector3(90, 0, 180), new Vector2(6, 6), "Assets/Game/Grid.png");
 
-    public AudioPlayer Music = new AudioPlayer(Global.DemoMap?.AudioData ?? [], 0.1f);
+    public SyncAudioPlayer Music = new SyncAudioPlayer(Global.DemoMap?.AudioData ?? [], 0.1f);
 
     public NoteObjectSpawner? Spawner = null;
     public NoteObjectRenderer? Renderer = null;
@@ -23,7 +23,7 @@ public class GameScene : IScene
         Spawner ??= new NoteObjectSpawner(this);
         Renderer ??= new NoteObjectRenderer(this);
 
-        if(!Music.Playing) Music.Play();
+        if(!Music.Playing) Music.Play(0f);
         else Music.Update();
 
         Spawner.Update();

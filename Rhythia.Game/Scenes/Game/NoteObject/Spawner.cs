@@ -35,7 +35,7 @@ public class NoteObjectSpawner
         UpdateRenderer(Game?.Renderer, Game?.Music);
     }
 
-    public void UpdateRenderer(NoteObjectRenderer? renderer, AudioPlayer? music)
+    public void UpdateRenderer(NoteObjectRenderer? renderer, SyncAudioPlayer? music)
     {
         if(renderer == null || music == null) return;
 
@@ -51,7 +51,7 @@ public class NoteObjectSpawner
         }
     }
 
-    public void UpdateNotes(AudioPlayer? music)
+    public void UpdateNotes(SyncAudioPlayer? music)
     {
         if(music == null) return;
 
