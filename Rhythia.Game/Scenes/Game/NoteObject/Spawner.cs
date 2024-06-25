@@ -15,8 +15,6 @@ public class NoteObjectSpawner
     // int SkippedNotes = 0;
     int StartProcess = 0;
 
-    Color[] Colors = [Color.White, Color.Pink];
-
     public List<int> ToUpdateIndices = [];
 
     bool Pushback = false;
@@ -104,7 +102,7 @@ public class NoteObjectSpawner
         for(int i = 0; i < (Global.DemoMap?.Difficulties[0].Notes.Length ?? 0); i++)
         {
             var noteData = Global.DemoMap?.Difficulties[0].Notes[i] ?? new Content.Beatmaps.Note();
-            OrderedNotes[i] = new NoteObject(noteData, i, Colors[i % Colors.Length]);
+            OrderedNotes[i] = new NoteObject(noteData, i, Global.Colors[i % Global.Colors.Length]);
         }
 
         Console.WriteLine($"Loaded {OrderedNotes.Length} Notes");
