@@ -10,8 +10,8 @@ namespace Rhythia.Game.Scenes.Game;
 
 public class GameScene : IScene
 {
-    public Camera Camera = new Camera(new Vector3(0, 0, -7), 70);
-    public Sprite Grid = Sprite.MakePlane(new Vector3(0, 0, 0), new Vector3(90, 0, 0), new Vector2(6, 6), "Assets/Game/Grid.png");
+    public Camera Camera = new Camera(new Vector3(0, 0, 7), 70);
+    public Sprite Grid = Sprite.MakePlane(new Vector3(0, 0, 0), new Vector3(90, 0, 180), new Vector2(6, 6), "Assets/Game/Grid.png");
 
     public AudioPlayer Music = new AudioPlayer(Global.DemoMap?.AudioData ?? [], 0.1f);
 
@@ -32,8 +32,8 @@ public class GameScene : IScene
     public void Render(Window window)
     {
         Camera.Start();
-        Grid.Render();
         Renderer?.RenderNotesSingle();
+        Grid.Render();
         Camera.End();
         Raylib.DrawText($"{Renderer?.ToRender.Count}", 10, 10, 16, Color.White);
     }

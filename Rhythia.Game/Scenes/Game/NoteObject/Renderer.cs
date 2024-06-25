@@ -1,5 +1,4 @@
 using System.Numerics;
-using Raylib_cs;
 using Rhythia.Engine.GFX;
 
 namespace Rhythia.Game.Scenes.Game.NoteObject;
@@ -27,9 +26,9 @@ public class NoteObjectRenderer
             var noteTime = note.CalculateTime(Game.Music?.Time ?? 0, Global.ApproachTime);
             var noteDist = noteTime * Global.ApproachDistance;
 
-            var transform = Matrix4x4.CreateTranslation(
+            var transform = Matrix4x4.Transpose(Matrix4x4.CreateTranslation(
                 new Vector3(note.X * 2f, note.Y * 2f, -noteDist)
-            );
+            ));
             var mat = ColoredMaterialGenerator.GetColoredMaterial(note.Color);
 
             MultiMesh.AddInstance(transform, mat);
