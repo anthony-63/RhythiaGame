@@ -237,5 +237,6 @@ public class SSPMap : IBeatmapSet
         Mappers = parser.GetMappers();
         Difficulties = [parser.GetBeatmapFromData()];
         Path = path;
+        // AudioData = File.ReadAllBytes("Assets/singularity/music.bin");
     }
 }

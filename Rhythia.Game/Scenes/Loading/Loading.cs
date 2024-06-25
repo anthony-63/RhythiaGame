@@ -12,7 +12,7 @@ public class LoadingScene : IScene
 
     public void Update(Window window, double dt)
     {
-        Global.DemoMap = new BeatmapSet("Assets/DemoMap");
+        Global.DemoMap = new SSPMap("Assets/singularity/singularity.sspm");
         window.SceneHandler.RemoveSceneByType<LoadingScene>();
         window.SceneHandler.AddScene(new GameScene());
     }

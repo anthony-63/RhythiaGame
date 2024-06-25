@@ -35,6 +35,6 @@ public class GameScene : IScene
         Renderer?.RenderNotesSingle();
         Grid.Render();
         Camera.End();
-        Raylib.DrawText($"{Renderer?.ToRender.Count}", 10, 10, 16, Color.White);
+        Raylib.DrawFPS(0, 0);
     }
 }
