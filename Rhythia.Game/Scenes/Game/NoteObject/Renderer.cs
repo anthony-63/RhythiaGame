@@ -1,4 +1,5 @@
 using System.Numerics;
+using Raylib_cs;
 using Rhythia.Engine.GFX;
 
 namespace Rhythia.Game.Scenes.Game.NoteObject;

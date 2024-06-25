@@ -11,11 +11,9 @@ struct MeshInstance
 
 public class MultiMesh
 {
-    Mesh Mesh;
+    public Mesh Mesh;
 
     List<MeshInstance> Instances = new List<MeshInstance>();
-
-    int Count;
 
     public MultiMesh(string meshPath)
     {

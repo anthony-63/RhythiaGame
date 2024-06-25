@@ -27,7 +27,6 @@ public class Window
             SceneHandler.RenderAllScenes(this);
 
             Raylib.EndDrawing();
-
         }
     }
 }
