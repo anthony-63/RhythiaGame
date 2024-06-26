@@ -40,7 +40,7 @@ public class GameScene : IScene
         Player.StartRender();
         Renderer?.RenderNotesSingle();
         Grid.Render();
-        Raylib.DrawFPS(0, 0);
         Player.EndRender();
+        Raylib.DrawFPS(0, 0);
     }
 }
