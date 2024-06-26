@@ -1,5 +1,6 @@
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
+using Rhythia.Engine;
 
 namespace Rhythia.Content.Beatmaps;
 
@@ -223,6 +224,8 @@ public class SSPMap : IBeatmapSet
 
     public SSPMap(string path)
     {
+        Logger.Info("Loading SSPM Map: ", path);
+
         var mapBuffer = File.ReadAllBytes(path);
         var parser = new SSPMapParser(mapBuffer);
 

@@ -5,6 +5,7 @@ using System.Reflection.Metadata.Ecma335;
 using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using Rhythia.Engine;
 
 namespace Rhythia.Content.Beatmaps;
 
@@ -22,6 +23,8 @@ public class BeatmapSet : IBeatmapSet
 
     public BeatmapSet(string folderPath)
     {
+        Logger.Info("Loading map: ", folderPath);
+
         Path = folderPath;
 
         var metaDoc = JsonDocument.Parse(File.ReadAllText(folderPath + "/meta.json"));

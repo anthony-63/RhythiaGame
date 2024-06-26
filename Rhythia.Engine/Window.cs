@@ -11,7 +11,10 @@ public class Window
     public Window(int width, int height, string title)
     {
         Raylib.InitAudioDevice();
+        Logger.Info("Initialized Audio");
+        
         Raylib.InitWindow(width, height, title);
+        Logger.Info("Initialized Window");
     }
 
     public void Run()

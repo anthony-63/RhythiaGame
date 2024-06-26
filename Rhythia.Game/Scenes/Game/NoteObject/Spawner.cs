@@ -97,6 +97,7 @@ public class NoteObjectSpawner
 
     void LoadNotes()
     {
+        Logger.Info("Started Note Loading");
         OrderedNotes = new NoteObject[Global.DemoMap?.Difficulties[0].Notes.Length ?? 1];
 
         for(int i = 0; i < (Global.DemoMap?.Difficulties[0].Notes.Length ?? 0); i++)
@@ -105,6 +106,6 @@ public class NoteObjectSpawner
             OrderedNotes[i] = new NoteObject(noteData, i, Global.Colors[i % Global.Colors.Length]);
         }
 
-        Console.WriteLine($"Loaded {OrderedNotes.Length} Notes");
+        Logger.Info($"Loaded {OrderedNotes.Length} Notes");
     }
 }
