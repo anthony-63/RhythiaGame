@@ -41,6 +41,6 @@ public class Sprite
         transform = Matrix4x4.Multiply(transform, Matrix4x4.CreateRotationX(Raylib.DEG2RAD * Rotation.X));
         transform = Matrix4x4.Multiply(transform, Matrix4x4.CreateRotationY(Raylib.DEG2RAD * Rotation.Y));
         transform = Matrix4x4.Multiply(transform, Matrix4x4.CreateRotationZ(Raylib.DEG2RAD * Rotation.Z));
-        Raylib.DrawMesh(Mesh, Material, transform);
+        Raylib.DrawMesh(Mesh, Material, Matrix4x4.Transpose(transform));
     }
 }
