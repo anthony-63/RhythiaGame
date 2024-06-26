@@ -11,10 +11,10 @@ namespace Rhythia.Game.Scenes.Game;
 
 public class GameScene : IScene
 {
-    public Player.Player Player = new Player.Player();
+    public Player.Player Player = new();
     public Sprite Grid = Sprite.MakePlane(new Vector3(0, 0, 0), new Vector3(90, 0, 180), new Vector2(6, 6), "Assets/Game/Grid.png");
 
-    public SyncAudioPlayer Music = new SyncAudioPlayer(Global.DemoMap?.AudioData ?? [], 0.1f);
+    public SyncAudioPlayer Music = new(Global.DemoMap?.AudioData ?? [], 0.1f);
 
     public NoteObjectSpawner? Spawner = null;
     public NoteObjectRenderer? Renderer = null;
