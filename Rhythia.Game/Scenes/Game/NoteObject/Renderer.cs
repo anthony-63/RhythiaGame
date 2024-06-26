@@ -23,8 +23,8 @@ public class NoteObjectRenderer
 
         foreach(var note in ToRender)
         {
-            var noteTime = note.CalculateTime(Game.Music?.Time ?? 0, Global.ApproachTime);
-            var noteDist = noteTime * Global.ApproachDistance;
+            var noteTime = note.CalculateTime(Game.Music?.Time ?? 0, Global.Settings.Note.ApproachTime);
+            var noteDist = noteTime * Global.Settings.Note.ApproachDistance;
 
             var transform = Matrix4x4.Transpose(Matrix4x4.CreateTranslation(
                 new Vector3(note.X * 2f, note.Y * 2f, -noteDist)

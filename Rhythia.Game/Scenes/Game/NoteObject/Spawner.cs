@@ -41,11 +41,11 @@ public class NoteObjectSpawner
         for(int i = StartProcess; i < OrderedNotes.Length; i++)
         {
             var note = OrderedNotes[i];
-            if(note.IsVisible(music.Time, music.Speed, Global.ApproachTime, Pushback))
+            if(note.IsVisible(music.Time, music.Speed, Global.Settings.Note.ApproachTime, Pushback))
             {
                 renderer.ToRender.Add(note);
             }
-            if(note.Time > music.Time + Global.ApproachTime * music.Speed) break;
+            if(note.Time > music.Time + Global.Settings.Note.ApproachTime * music.Speed) break;
         }
     }
 
@@ -58,11 +58,11 @@ public class NoteObjectSpawner
         for(int i = StartProcess; i < OrderedNotes.Length; i++)
         {
             var note = OrderedNotes[i];
-            if(note.CalculateTime(music.Time, Global.ApproachTime * music.Speed) <= 0 && !note.Hit)
+            if(note.CalculateTime(music.Time, Global.Settings.Note.ApproachTime * music.Speed) <= 0 && !note.Hit)
             {
                 ToUpdateIndices.Add(i);
             }
-            if(note.Time > music.Time + Global.ApproachTime * music.Speed) break;
+            if(note.Time > music.Time + Global.Settings.Note.ApproachTime * music.Speed) break;
         }
 
         foreach(int i in ToUpdateIndices)
