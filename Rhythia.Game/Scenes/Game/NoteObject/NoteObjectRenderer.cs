@@ -33,9 +33,9 @@ public class NoteObjectRenderer
             var noteDist = noteTime * Global.Settings.Note.ApproachDistance;
 
             var transform = Matrix4x4.Transpose(Matrix4x4.CreateTranslation(
-                new Vector3(note.X * 2f, note.Y * 2f, -noteDist)
+                new Vector3(note.X, note.Y, -noteDist)
             ));
-            
+
             var mat = ColorMaterials[note.Index % ColorMaterials.Length];
 
             MultiMesh.AddInstance(transform, mat);

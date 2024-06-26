@@ -1,5 +1,6 @@
 using System.Numerics;
 using Rhythia.Engine.GFX;
+using Rhythia.Game.Scenes.Game.NoteObject;
 
 namespace Rhythia.Game.Scenes.Game.Player;
 
@@ -13,6 +14,15 @@ public class Player
     {
         Camera.Start();
         Cursor.Render();
+    }
+
+    public void Hit(int idx)
+    {
+        Score.Hits += 1;
+    }
+    public void Miss(int idx) 
+    {
+        Score.Misses += 1;
     }
 
     public void Update()

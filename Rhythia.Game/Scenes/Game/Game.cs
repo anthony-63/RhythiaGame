@@ -26,13 +26,13 @@ public class GameScene : IScene
 
     public void Update(Window window, double dt)
     {
-        Spawner ??= new NoteObjectSpawner(this);
+        Spawner ??= new NoteObjectSpawner(this, Player);
         Renderer ??= new NoteObjectRenderer(this);
 
         if(!Music.Playing) Music.Play(0f);
         else Music.Update();
         Player.Update();
-        Spawner.Update();
+        Spawner.Update(Player.Cursor);
     }
 
     public void Render(Window window)

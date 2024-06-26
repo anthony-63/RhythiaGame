@@ -2,6 +2,7 @@ using System.Runtime.InteropServices;
 using Raylib_cs;
 using Rhythia.Engine;
 using Rhythia.Engine.Audio;
+using Rhythia.Game.Scenes.Game.Player;
 
 namespace Rhythia.Game.Scenes.Game.NoteObject;
 
@@ -17,20 +18,24 @@ public class NoteObjectSpawner
 
     public List<int> ToUpdateIndices = [];
 
-    bool Pushback = false;
-
     GameScene Game;
 
-    public NoteObjectSpawner(GameScene game)
+    public delegate void NoteEventHandler(int idx);
+    public NoteEventHandler? Hit;
+    public NoteEventHandler? Miss;
+
+    public NoteObjectSpawner(GameScene game, Player.Player player)
     {
         Game = game;
         LoadNotes();
+        Hit += player.Hit;
+        Miss += player.Miss;
     }
 
-    public void Update()
+    public void Update(Cursor cursor)
     {
-        UpdateNotes(Game?.Music ?? null);
-        UpdateRenderer(Game?.Renderer, Game?.Music);
+        UpdateNotes(Game.Music, cursor);
+        UpdateRenderer(Game.Renderer, Game.Music);
     }
 
     public void UpdateRenderer(NoteObjectRenderer? renderer, SyncAudioPlayer? music)
@@ -41,7 +46,7 @@ public class NoteObjectSpawner
         for(int i = StartProcess; i < OrderedNotes.Length; i++)
         {
             var note = OrderedNotes[i];
-            if(note.IsVisible(music.Time, music.Speed, Global.Settings.Note.ApproachTime, Pushback))
+            if(note.IsVisible(music.Time, music.Speed, Global.Settings.Note.ApproachTime, Global.Settings.Note.Pushback))
             {
                 renderer.ToRender.Add(note);
             }
@@ -49,7 +54,7 @@ public class NoteObjectSpawner
         }
     }
 
-    public void UpdateNotes(SyncAudioPlayer? music)
+    public void UpdateNotes(SyncAudioPlayer? music, Cursor cursor)
     {
         if(music == null) return;
 
@@ -69,16 +74,20 @@ public class NoteObjectSpawner
         {
             var didHitreg = false;
 
-            if(false) // check note being hit
-            {
-                // OrderedNotes[i].Hit = true;
-                // didHitreg = true;
-            }
-
-            if(!OrderedNotes[i].Hit && OrderedNotes[i].InHitWindow(music.Time, music.Speed)) // miss
+            if(OrderedNotes[i].IsHitting(cursor.Position)) // check note being hit
             {
                 OrderedNotes[i].Hit = true;
                 didHitreg = true;
+
+                Hit?.Invoke(OrderedNotes[i].Index);
+            }
+
+            if(!OrderedNotes[i].Hit && !OrderedNotes[i].InHitWindow(music.Time, music.Speed)) // miss
+            {
+                OrderedNotes[i].Hit = true;
+                didHitreg = true;
+
+                Miss?.Invoke(OrderedNotes[i].Index);
             }
 
             if(didHitreg)

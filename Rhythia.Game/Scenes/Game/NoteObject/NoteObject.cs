@@ -1,3 +1,4 @@
+using System.Numerics;
 using Raylib_cs;
 using Rhythia.Content.Beatmaps;
 
@@ -15,8 +16,8 @@ public class NoteObject
     public Color Color;
 
     public float Time => Note.Time;
-    public float X => Note.X;
-    public float Y => Note.Y;
+    public float X => Note.X * 2f;
+    public float Y => Note.Y * 2f;
 
     public NoteObject(Note note, int index, Color color)
     {
@@ -40,5 +41,10 @@ public class NoteObject
     public float CalculateTime(float Time, float ApproachTime)
     {
         return (Note.Time - Time) / ApproachTime;
+    }
+
+    public bool IsHitting(Vector2 cursorPosition)
+    {
+        return Math.Abs(-cursorPosition.X - X) <= AABB && Math.Abs(cursorPosition.Y - Y) <= AABB;
     }
 }
