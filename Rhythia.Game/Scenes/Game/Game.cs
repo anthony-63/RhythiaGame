@@ -19,6 +19,11 @@ public class GameScene : IScene
     public NoteObjectSpawner? Spawner = null;
     public NoteObjectRenderer? Renderer = null;
 
+    public GameScene()
+    {
+        Raylib.DisableCursor();
+    }
+
     public void Update(Window window, double dt)
     {
         Spawner ??= new NoteObjectSpawner(this);
@@ -26,7 +31,7 @@ public class GameScene : IScene
 
         if(!Music.Playing) Music.Play(0f);
         else Music.Update();
-
+        Player.Update();
         Spawner.Update();
     }
 
