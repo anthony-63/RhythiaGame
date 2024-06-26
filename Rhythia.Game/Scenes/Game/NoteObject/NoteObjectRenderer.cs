@@ -1,4 +1,5 @@
 using System.Numerics;
+using Raylib_cs;
 using Rhythia.Engine.GFX;
 
 namespace Rhythia.Game.Scenes.Game.NoteObject;
@@ -11,10 +12,15 @@ public class NoteObjectRenderer
 
     MultiMesh MultiMesh;
 
+    public Material[] ColorMaterials;
+
     public NoteObjectRenderer(GameScene game)
     {
         Game = game;
         MultiMesh = new MultiMesh("Assets/Game/Mesh.obj");
+        ColorMaterials = new Material[Global.Colors.Length];
+        for(int i = 0; i < ColorMaterials.Length; i++)
+            ColorMaterials[i] = ColoredMaterialGenerator.GetColoredMaterial(Global.Colors[i]);
     }
 
     public void RenderNotesSingle()
@@ -29,7 +35,8 @@ public class NoteObjectRenderer
             var transform = Matrix4x4.Transpose(Matrix4x4.CreateTranslation(
                 new Vector3(note.X * 2f, note.Y * 2f, -noteDist)
             ));
-            var mat = ColoredMaterialGenerator.GetColoredMaterial(note.Color);
+            
+            var mat = ColorMaterials[note.Index % ColorMaterials.Length];
 
             MultiMesh.AddInstance(transform, mat);
         }
