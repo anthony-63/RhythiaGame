@@ -2,8 +2,9 @@ using Rhythia.Content.Beatmaps;
 using Rhythia.Content.Settings;
 using Rhythia.Engine;
 using Rhythia.Engine.Scene;
+using Rhythia.Game.Scenes.Game;
 
-namespace Rhythia.Game.Scenes.Game;
+namespace Rhythia.Game.Scenes.Loading;
 
 public class LoadingScene : IScene
 {
@@ -16,7 +17,7 @@ public class LoadingScene : IScene
         Global.Settings = Settings.Load("Assets/settings.json");
 
         Global.DemoMap = new BeatmapSet("Assets/DemoMap");
-        
+
         window.SceneHandler.RemoveSceneByType<LoadingScene>();
         window.SceneHandler.AddScene(new GameScene());
     }
