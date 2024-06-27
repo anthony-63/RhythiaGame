@@ -3,6 +3,7 @@ using Rhythia.Content.Settings;
 using Rhythia.Engine;
 using Rhythia.Engine.Scene;
 using Rhythia.Game.Scenes.Game;
+using Rhythia.Game.Scenes.Menu;
 
 namespace Rhythia.Game.Scenes.Loading;
 
@@ -19,6 +20,6 @@ public class LoadingScene : IScene
         Global.DemoMap = new BeatmapSet("Assets/DemoMap");
 
         window.SceneHandler.RemoveSceneByType<LoadingScene>();
-        window.SceneHandler.AddScene(new GameScene());
+        window.SceneHandler.AddScene(new MenuScene());
     }
 }
