@@ -8,8 +8,7 @@ public static class Global
 {
     public static IBeatmapSet? DemoMap;
 
-
-    public static Settings Settings = new Settings();
+    public static Settings Settings = new();
 
     public static Color[] Colors = [Color.White, Color.Pink];
 }

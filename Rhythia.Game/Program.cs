@@ -2,6 +2,7 @@
 using Raylib_cs;
 using Rhythia.Engine;
 using Rhythia.Game.Scenes.Game;
+using Rhythia.Game.Scenes.Loading;
 
 namespace Rhythia.Game;
 

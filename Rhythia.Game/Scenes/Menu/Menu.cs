@@ -4,6 +4,7 @@ using Rhythia.Content.Settings;
 using Rhythia.Engine;
 using Rhythia.Engine.Scene;
 using Rhythia.Engine.UI;
+using Rhythia.Engine.UI.Elements;
 
 namespace Rhythia.Game.Scenes.Menu;
 
