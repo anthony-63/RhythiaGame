@@ -6,8 +6,7 @@ using Rhythia.Game.Scenes.Game.Player;
 
 namespace Rhythia.Game.Scenes.Game.NoteObject;
 
-public class NoteObjectSpawner
-{
+public class NoteObjectSpawner {
     public NoteObject[] OrderedNotes = [];
     
     NoteObject? NextNote = null;
@@ -24,78 +23,63 @@ public class NoteObjectSpawner
     public NoteEventHandler? Hit;
     public NoteEventHandler? Miss;
 
-    public NoteObjectSpawner(GameScene game, Player.Player player)
-    {
+    public NoteObjectSpawner(GameScene game, Player.Player player) {
         Game = game;
         LoadNotes();
         Hit += player.Hit;
         Miss += player.Miss;
     }
 
-    public void Update(Cursor cursor)
-    {
+    public void Update(Cursor cursor) {
         UpdateNotes(Game.Music, cursor);
         UpdateRenderer(Game.Renderer, Game.Music);
     }
 
-    public void UpdateRenderer(NoteObjectRenderer? renderer, SyncAudioPlayer? music)
-    {
+    public void UpdateRenderer(NoteObjectRenderer? renderer, SyncAudioPlayer? music) {
         if(renderer == null || music == null) return;
 
         renderer.ToRender.Clear();
-        for(int i = StartProcess; i < OrderedNotes.Length; i++)
-        {
+        for(int i = StartProcess; i < OrderedNotes.Length; i++) {
             var note = OrderedNotes[i];
             if(note.IsVisible(music.Time, music.Speed, Global.Settings.Note.ApproachTime, Global.Settings.Note.Pushback))
-            {
                 renderer.ToRender.Add(note);
-            }
             if(note.Time > music.Time + Global.Settings.Note.ApproachTime * music.Speed) break;
         }
     }
 
-    public void UpdateNotes(SyncAudioPlayer? music, Cursor cursor)
-    {
+    public void UpdateNotes(SyncAudioPlayer? music, Cursor cursor) {
         if(music == null) return;
 
         ToUpdateIndices.Clear();
 
-        for(int i = StartProcess; i < OrderedNotes.Length; i++)
-        {
+        for(int i = StartProcess; i < OrderedNotes.Length; i++) {
             var note = OrderedNotes[i];
             if(note.CalculateTime(music.Time, Global.Settings.Note.ApproachTime * music.Speed) <= 0 && !note.Hit)
-            {
                 ToUpdateIndices.Add(i);
-            }
             if(note.Time > music.Time + Global.Settings.Note.ApproachTime * music.Speed) break;
         }
 
-        foreach(int i in ToUpdateIndices)
-        {
+        foreach(int i in ToUpdateIndices) {
             var didHitreg = false;
 
-            if(OrderedNotes[i].IsHitting(cursor.Position)) // check note being hit
-            {
+            if(OrderedNotes[i].IsHitting(cursor.Position)) {
                 OrderedNotes[i].Hit = true;
                 didHitreg = true;
 
                 Hit?.Invoke(OrderedNotes[i].Index);
             }
 
-            if(!OrderedNotes[i].Hit && !OrderedNotes[i].InHitWindow(music.Time, music.Speed)) // miss
-            {
+            if(!OrderedNotes[i].Hit && !OrderedNotes[i].InHitWindow(music.Time, music.Speed)) {
                 OrderedNotes[i].Hit = true;
                 didHitreg = true;
 
                 Miss?.Invoke(OrderedNotes[i].Index);
             }
 
-            if(didHitreg)
-            {
+            if(didHitreg) {
                 LastNote = OrderedNotes[i];
 
-                if(OrderedNotes[i].Index < OrderedNotes.Length - 1)
-                {
+                if(OrderedNotes[i].Index < OrderedNotes.Length - 1) {
                     NextNote = OrderedNotes[OrderedNotes[i].Index + 1];
                     StartProcess++;
                 }
@@ -104,13 +88,11 @@ public class NoteObjectSpawner
         }
     }
 
-    void LoadNotes()
-    {
+    void LoadNotes() {
         Logger.Info("Started Note Loading");
         OrderedNotes = new NoteObject[Global.DemoMap?.Difficulties[0].Notes.Length ?? 1];
 
-        for(int i = 0; i < (Global.DemoMap?.Difficulties[0].Notes.Length ?? 0); i++)
-        {
+        for(int i = 0; i < (Global.DemoMap?.Difficulties[0].Notes.Length ?? 0); i++) {
             var noteData = Global.DemoMap?.Difficulties[0].Notes[i] ?? new Content.Beatmaps.Note();
             OrderedNotes[i] = new NoteObject(noteData, i, Global.Colors[i % Global.Colors.Length]);
         }

@@ -1,7 +1,6 @@
 namespace Rhythia.Content.Beatmaps;
 
-public interface IBeatmapSet
-{
+public interface IBeatmapSet {
     ushort Version { get; set; }
     String Title { get; set; }
     String Artist { get; set; }

@@ -4,8 +4,7 @@ using Raylib_cs;
 
 namespace Rhythia.Engine.Audio;
 
-public class SyncAudioPlayer
-{
+public class SyncAudioPlayer {
     public Music AudioStream;
 
     private byte[] AudioData = {};
@@ -17,16 +16,14 @@ public class SyncAudioPlayer
 
     private float LastTime = 0;
 
-    public SyncAudioPlayer(string path, float volume, float speed = 1f)
-    {
+    public SyncAudioPlayer(string path, float volume, float speed = 1f) {
         AudioStream = Raylib.LoadMusicStream(path);
         Raylib.SetMusicVolume(AudioStream, volume);
         Raylib.SetMusicPitch(AudioStream, speed);
         Speed = speed;
     }
 
-    public SyncAudioPlayer(byte[] data, float volume, float speed = 1f)
-    {
+    public SyncAudioPlayer(byte[] data, float volume, float speed = 1f) {
         AudioData = data;
         AudioStream = Raylib.LoadMusicStreamFromMemory(AudioUtil.GetFileFormat(AudioData), AudioData);
         Raylib.SetMusicVolume(AudioStream, volume);
@@ -34,8 +31,7 @@ public class SyncAudioPlayer
         Speed = speed;
     }
 
-    public void Play(float from)
-    {
+    public void Play(float from) {
         Raylib.PlayMusicStream(AudioStream);
         Raylib.SeekMusicStream(AudioStream, from);
         LastTime = Now();
@@ -48,8 +44,7 @@ public class SyncAudioPlayer
         return nano;
     }
 
-    public void Update()
-    {
+    public void Update() {
         if(!Raylib.IsMusicStreamPlaying(AudioStream)) return;
 
         Raylib.UpdateMusicStream(AudioStream);
@@ -57,17 +52,14 @@ public class SyncAudioPlayer
         Time += Raylib.GetFrameTime();
     }
 
-    public void Sync()
-    {
-        if(ShouldSync())
-        {
+    public void Sync() {
+        if(ShouldSync()) {
             Console.WriteLine($"Resynced audio: {Time}");
             Raylib.SeekMusicStream(AudioStream, Time);
         }
     }
 
-    private bool ShouldSync()
-    {
+    private bool ShouldSync() {
         return Math.Abs(Time - Raylib.GetMusicTimePlayed(AudioStream)) >= 0.05;
     }
 }

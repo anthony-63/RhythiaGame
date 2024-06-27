@@ -7,14 +7,10 @@ using Rhythia.Game.Scenes.Menu;
 
 namespace Rhythia.Game.Scenes.Loading;
 
-public class LoadingScene : IScene
-{
-    public void Render(Window window)
-    {
-    }
+public class LoadingScene : IScene {
+    public void Render(Window window) {}
 
-    public void Update(Window window, double dt)
-    {
+    public void Update(Window window, double dt) {
         Global.Settings = Settings.Load("Assets/settings.json");
 
         Global.DemoMap = new BeatmapSet("Assets/DemoMap");

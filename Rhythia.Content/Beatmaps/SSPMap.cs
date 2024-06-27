@@ -4,16 +4,14 @@ using Rhythia.Engine;
 
 namespace Rhythia.Content.Beatmaps;
 
-struct DataOffsets
-{
+struct DataOffsets {
     public ulong CustomDataOffset;
     public ulong MarkerOffset;
     public ulong AudioOffset;
     public ulong AudioLength;
 }
 
-enum BlockOffsets
-{
+enum BlockOffsets {
     Magic = 0x0,
     Version = 0x4,
     NoteCount = 0x22,
@@ -23,22 +21,19 @@ enum BlockOffsets
     IdOffset = 0x80,
 };
 
-class SSPMapParser
-{
+class SSPMapParser {
     int Index;
     byte[] Buffer;
 
     DataOffsets DataOffsets;
 
-    public SSPMapParser(byte[] buffer)
-    {
+    public SSPMapParser(byte[] buffer) {
         Buffer = buffer;
         Index = 0;
         DataOffsets = GetDataOffsets();
     }
 
-    public DataOffsets GetDataOffsets()
-    {
+    public DataOffsets GetDataOffsets() {
         Index = (int)BlockOffsets.DataOffsets;
 
         var offsets = new DataOffsets();
@@ -55,28 +50,24 @@ class SSPMapParser
         return offsets;
     }
 
-    public bool VerifySignature()
-    {
+    public bool VerifySignature() {
         Index = (int)BlockOffsets.Magic;
         return "SS+m"u8.ToArray().SequenceEqual([Read8(), Read8(), Read8(), Read8()]);
     }
 
-    public ushort GetVersion()
-    {
+    public ushort GetVersion() {
         Index = (int)BlockOffsets.Version;
         return Read8();
     }
 
-    public string GetTitle()
-    {
+    public string GetTitle() {
         Index = (int)BlockOffsets.IdOffset;
         var titleOffset = (int)BlockOffsets.IdOffset + Read16() + 0x2;
         Index = titleOffset;
         return ReadString();
     }
 
-    public string[] GetMappers()
-    {
+    public string[] GetMappers() {
         Index = (int)BlockOffsets.IdOffset;
         var titleOffset = (int)BlockOffsets.IdOffset + Read16() + 0x2;
         Index = titleOffset;
@@ -94,8 +85,7 @@ class SSPMapParser
         return mappers;
     }
 
-    public string GetDifficultyName()
-    {
+    public string GetDifficultyName() {
         Index = (int)DataOffsets.CustomDataOffset;
 
         var customDataCount = Read16();
@@ -112,8 +102,7 @@ class SSPMapParser
             throw new FileLoadException("Invalid data type for difficulty name");
     }
 
-    Note[] GetNotes()
-    {
+    Note[] GetNotes() {
         Index = (int)BlockOffsets.NoteCount;
         var noteCount = Read32();
 
@@ -121,26 +110,20 @@ class SSPMapParser
 
         var notes = new Note[noteCount];
 
-        for(int i = 0; i < noteCount; i++)
-        {
+        for(int i = 0; i < noteCount; i++) {
             var time = Read32() / 1000.0f;
 
             Read8(); // always 1. why??? so dumb!
 
             var hasQuantum = Read8() == 1;
-            if(hasQuantum)
-            {
-                notes[i] = new Note
-                {
+            if(hasQuantum) {
+                notes[i] = new Note {
                     Time = time,
                     X = -(ReadFloat() - 1),
                     Y = -(ReadFloat() - 1),
                 };
-            }
-            else
-            {
-                notes[i] = new Note
-                {
+            } else {
+                notes[i] = new Note {
                     Time = time,
                     X = -(Read8() - 1),
                     Y = -(Read8() - 1),
@@ -151,60 +134,50 @@ class SSPMapParser
         return notes;
     }
 
-    public Beatmap GetBeatmapFromData()
-    {
-        return new Beatmap
-        {
+    public Beatmap GetBeatmapFromData() {
+        return new Beatmap {
             Name = GetDifficultyName(),
             Notes = [.. GetNotes().ToList().OrderBy(n => n.Time)],
         };
     }
 
-    byte Read8()
-    {
+    byte Read8() {
         return Buffer[Index++];
     }
 
-    ushort Read16()
-    {
+    ushort Read16() {
         Index += 2;
         return BitConverter.ToUInt16(Buffer, Index - 2);
     }
 
-    uint Read32()
-    {
+    uint Read32() {
         Index += 4;
         return BitConverter.ToUInt32(Buffer, Index - 4);
     }
 
-    ulong Read64()
-    {
+    ulong Read64() {
         Index += 8;
         return BitConverter.ToUInt64(Buffer, Index - 8);
     }
 
-    float ReadFloat()
-    {
+    float ReadFloat() {
         Index += 4;
         return BitConverter.ToSingle(Buffer, Index - 4);
     }
 
-    void ReadExact(ref byte[] bytes)
-    {
+    void ReadExact(ref byte[] bytes) {
         for(int i = 0; i < bytes.Length; i++)
             bytes[i] = Read8();
     }
 
-    string ReadString()
-    {
+    string ReadString() {
         var len = Read16();
         var stringBuffer = new byte[len];
         ReadExact(ref stringBuffer);
         return Encoding.UTF8.GetString(stringBuffer);
     }
 
-    string ReadStringLong()
-    {
+    string ReadStringLong() {
         var len = Read32();
         var stringBuffer = new byte[len];
         ReadExact(ref stringBuffer);
@@ -212,8 +185,7 @@ class SSPMapParser
     }
 }
 
-public class SSPMap : IBeatmapSet
-{
+public class SSPMap : IBeatmapSet {
     public ushort Version { get; set; }
     public string Title { get; set; }
     public string Artist { get; set; } = "";
@@ -222,8 +194,7 @@ public class SSPMap : IBeatmapSet
     public string Path { get; set; }
     public byte[] AudioData { get; set; } = [];
 
-    public SSPMap(string path)
-    {
+    public SSPMap(string path) {
         Logger.Info("Loading SSPM Map: ", path);
 
         var mapBuffer = File.ReadAllBytes(path);

@@ -2,8 +2,7 @@ using System.Numerics;
 
 namespace Rhythia.Engine.UI.Elements;
 
-public class UiElement : IUiElement
-{
+public class UiElement : IUiElement {
     private Vector2 absoluteSize = Vector2.Zero;
     private Vector2 absolutePosition = Vector2.Zero;
 
@@ -15,8 +14,7 @@ public class UiElement : IUiElement
 
     public List<IUiElement> Children = new();
 
-    public void Update(double dt)
-    {
+    public void Update(double dt) {
         foreach (var element in Children) element.Update(dt);
     }
 
@@ -34,8 +32,7 @@ public class UiElement : IUiElement
         }
     }
 
-    public void Render()
-    {
+    public void Render() {
         foreach (var element in Children) element.Render();
     }
 }

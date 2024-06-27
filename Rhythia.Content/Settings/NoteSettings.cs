@@ -1,7 +1,6 @@
 namespace Rhythia.Content.Settings;
 
-public class NoteSettings
-{
+public class NoteSettings {
     public float ApproachTime { get; set; } = 0.38f;
     public float ApproachDistance { get; set; } = 14f;
 

@@ -4,8 +4,7 @@ using Rhythia.Engine.GFX;
 
 namespace Rhythia.Game.Scenes.Game.NoteObject;
 
-public class NoteObjectRenderer
-{
+public class NoteObjectRenderer {
     GameScene Game;
 
     public List<NoteObject> ToRender = [];
@@ -14,8 +13,7 @@ public class NoteObjectRenderer
 
     public Material[] ColorMaterials;
 
-    public NoteObjectRenderer(GameScene game)
-    {
+    public NoteObjectRenderer(GameScene game) {
         Game = game;
         MultiMesh = new MultiMesh("Assets/Game/Mesh.obj");
         ColorMaterials = new Material[Global.Colors.Length];
@@ -23,12 +21,10 @@ public class NoteObjectRenderer
             ColorMaterials[i] = ColoredMaterialGenerator.GetColoredMaterial(Global.Colors[i]);
     }
 
-    public void RenderNotesSingle()
-    {
+    public void RenderNotesSingle() {
         if(ToRender.Count < 1) return;
 
-        foreach(var note in ToRender)
-        {
+        foreach(var note in ToRender) {
             var noteTime = note.CalculateTime(Game.Music?.Time ?? 0, Global.Settings.Note.ApproachTime);
             var noteDist = noteTime * Global.Settings.Note.ApproachDistance;
 

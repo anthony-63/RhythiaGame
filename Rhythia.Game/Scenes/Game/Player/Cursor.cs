@@ -6,8 +6,7 @@ using Rhythia.Engine.GFX;
 
 namespace Rhythia.Game.Scenes.Game.Player;
 
-public class Cursor
-{
+public class Cursor {
 
     private float CLAMP = (6.0f - 0.525f) / 2.0f;
 
@@ -17,19 +16,16 @@ public class Cursor
 
     private Vector2 LastMousePosition;
 
-    public Cursor(Vector3 initialPosition, Vector3 rotation, Vector2 scale, string texPath)
-    {
+    public Cursor(Vector3 initialPosition, Vector3 rotation, Vector2 scale, string texPath) {
         Sprite = Sprite.MakePlane(initialPosition, rotation, scale, texPath);
         LastMousePosition = Raylib.GetMousePosition();
     }
 
-    public void Render()
-    {
+    public void Render() {
         Sprite.Render();
     }
 
-    public void ProcessInput()
-    {
+    public void ProcessInput() {
         var mouseNow = Raylib.GetMousePosition();
         var mouseDelta = mouseNow - LastMousePosition;
 

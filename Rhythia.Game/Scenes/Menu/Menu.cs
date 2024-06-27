@@ -8,8 +8,7 @@ using Rhythia.Engine.UI.Elements;
 
 namespace Rhythia.Game.Scenes.Menu;
 
-public class MenuScene : IScene
-{
+public class MenuScene : IScene {
     public UiRoot TestUI = new();
 
     public MenuScene() {
@@ -18,13 +17,11 @@ public class MenuScene : IScene
         });
     }
 
-    public void Render(Window window)
-    {
+    public void Render(Window window) {
         TestUI.Render(Raylib.GetRenderWidth(), Raylib.GetRenderHeight());
     }
 
-    public void Update(Window window, double dt)
-    {
+    public void Update(Window window, double dt) {
         TestUI.Update(dt);
     }
 }

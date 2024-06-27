@@ -2,8 +2,7 @@ using Raylib_cs;
 
 namespace Rhythia.Engine.Audio;
 
-public class AudioPlayer
-{
+public class AudioPlayer {
     public Music AudioStream;
 
     private byte[] AudioData = {};
@@ -13,16 +12,14 @@ public class AudioPlayer
 
     public float Speed = 1f;
 
-    public AudioPlayer(string path, float volume, float speed = 1f)
-    {
+    public AudioPlayer(string path, float volume, float speed = 1f) {
         AudioStream = Raylib.LoadMusicStream(path);
         Raylib.SetMusicVolume(AudioStream, volume);
         Raylib.SetMusicPitch(AudioStream, speed);
         Speed = speed;
     }
 
-    public AudioPlayer(byte[] data, float volume, float speed = 1f)
-    {
+    public AudioPlayer(byte[] data, float volume, float speed = 1f) {
         AudioData = data;
         AudioStream = Raylib.LoadMusicStreamFromMemory(AudioUtil.GetFileFormat(AudioData), AudioData);
         Raylib.SetMusicVolume(AudioStream, volume);
@@ -30,19 +27,16 @@ public class AudioPlayer
         Speed = speed;
     }
 
-    public void Play(float from)
-    {
+    public void Play(float from) {
         Raylib.PlayMusicStream(AudioStream);
         Raylib.SeekMusicStream(AudioStream, from);
     }
 
-    public void Seek(float from)
-    {
+    public void Seek(float from) {
         Raylib.SeekMusicStream(AudioStream, from);
     }
 
-    public void Update()
-    {
+    public void Update() {
         Raylib.UpdateMusicStream(AudioStream);
     }
 }
