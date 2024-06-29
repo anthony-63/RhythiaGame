@@ -14,11 +14,11 @@ public class UiElement : IUiElement {
 
     public List<IUiElement> Children = new();
 
-    public void Update(double dt) {
+    public virtual void Update(double dt) {
         foreach (var element in Children) element.Update(dt);
     }
 
-    public void UpdateAbsoluteValues(Vector2 parentSize, Vector2 parentPosition) {
+    public virtual void UpdateAbsoluteValues(Vector2 parentSize, Vector2 parentPosition) {
         absoluteSize = new Vector2(
             (parentSize.X * Size.X.Scale) + Size.X.Offset,
             (parentSize.Y * Size.Y.Scale) + Size.Y.Offset
@@ -32,7 +32,7 @@ public class UiElement : IUiElement {
         }
     }
 
-    public void Render() {
+    public virtual void Render() {
         foreach (var element in Children) element.Render();
     }
 }
