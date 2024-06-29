@@ -12,7 +12,8 @@ public class MenuScene : IScene {
     public UiRoot TestUI = new();
     public Label FPSLabel = new()
     {
-        // FontSpacing = 1,
+        TextColor = Color.Green,
+        FontSpacing = 2,
         FontSize = 24,
         AlignmentX = TextAlignX.Left,
         AlignmentY = TextAlignY.Top,
@@ -20,13 +21,44 @@ public class MenuScene : IScene {
 
     public MenuScene() {
         TestUI.Children.Add(new UiElement {
-            Size = new UDim2(0.5f, 0 ,0.5f, 0),
+            Size = new UDim2(1, 0, 1, 0),
             Children = {
                 new Label {
                     Size = new UDim2(1, 0, 1, 0),
-                    Text = "Test Label 1",
+                    Text = "Test Label 0\nNew Line",
+                    FontSize = 18,
+                    AlignmentX = TextAlignX.Left,
+                    AlignmentY = TextAlignY.Bottom
+                },
+                new Label {
+                    Size = new UDim2(1, 0, 1, 0),
+                    Text = "Test Label 1\nNew Line",
                     FontSize = 24,
                     AlignmentX = TextAlignX.Center,
+                    AlignmentY = TextAlignY.Middle
+                },
+                new Label {
+                    Size = new UDim2(1, 0, 1, 0),
+                    Text = "Test Label 2\nNew Line",
+                    FontSize = 32,
+                    AlignmentX = TextAlignX.Right,
+                    AlignmentY = TextAlignY.Top
+                },
+                new Label {
+                    Size = new UDim2(0, 96, 1, 0),
+                    Text = "Wrapping Label testtesttesttesttesttesttesttest",
+                    TextWrapped = true,
+                    FontSize = 24,
+                    AlignmentX = TextAlignX.Left,
+                    AlignmentY = TextAlignY.Middle
+                },
+                new Label {
+                    Size = new UDim2(0, 96, 1, 0),
+                    Position = new UDim2(1, -96, 0, 0),
+                    Text = "Wrapping Label 2 testtesttesttesttesttesttesttest",
+                    TextWrapped = true,
+                    FontSize = 24,
+                    AlignmentX = TextAlignX.Right,
                     AlignmentY = TextAlignY.Middle
                 }
             }
