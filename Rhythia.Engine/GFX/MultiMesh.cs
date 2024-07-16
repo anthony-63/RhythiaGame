@@ -29,7 +29,7 @@ public class MultiMesh {
 
     public void Render() {
         foreach(var instance in Instances) {
-            Raylibesh(Mesh, instance.Material, instance.Transform);
+            Raylib.DrawMesh(Mesh, instance.Material, instance.Transform);
         }
         Instances.Clear();
     }

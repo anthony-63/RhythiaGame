@@ -16,6 +16,6 @@ public class LoadingScene : IScene {
         Global.DemoMap = new BeatmapSet("Assets/DemoMap");
 
         window.SceneHandler.RemoveSceneByType<LoadingScene>();
-        window.SceneHandler.AddScene(new MenuScene());
+        window.SceneHandler.AddScene(new GameScene());
     }
 }
