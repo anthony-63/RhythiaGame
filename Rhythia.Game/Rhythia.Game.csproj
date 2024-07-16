@@ -10,7 +10,6 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <ApplicationIcon>../Assets/Branding/NewRhythiaIcon.ico</ApplicationIcon>
   </PropertyGroup>
 
 </Project>
