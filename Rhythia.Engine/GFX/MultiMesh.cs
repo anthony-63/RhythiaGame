@@ -3,41 +3,33 @@ using Raylib_cs;
 
 namespace Rhythia.Engine.GFX;
 
-struct MeshInstance
-{
+struct MeshInstance {
     public Material Material;
     public Matrix4x4 Transform;
 }
 
-public class MultiMesh
-{
+public class MultiMesh {
     public Mesh Mesh;
 
     List<MeshInstance> Instances = new List<MeshInstance>();
 
-    public MultiMesh(string meshPath)
-    {
+    public MultiMesh(string meshPath) {
         var model = Raylib.LoadModel(meshPath);
-        unsafe
-        {
+        unsafe {
             Mesh = model.Meshes[0];
         }
     }
 
-    public void AddInstance(Matrix4x4 transform, Material material)
-    {
-        Instances.Add(new MeshInstance()
-        {
+    public void AddInstance(Matrix4x4 transform, Material material) {
+        Instances.Add(new MeshInstance() {
             Material = material,
             Transform = transform,
         });
     }
 
-    public void Render()
-    {
-        foreach(var instance in Instances)
-        {
-            Raylib.DrawMesh(Mesh, instance.Material, instance.Transform);
+    public void Render() {
+        foreach(var instance in Instances) {
+            Raylibesh(Mesh, instance.Material, instance.Transform);
         }
         Instances.Clear();
     }

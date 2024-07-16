@@ -6,6 +6,7 @@ namespace Rhythia.Engine.UI;
 
 public class UiRoot {
     public List<IUiElement> Children = new();
+    
     public void Render(int width, int height) {
         var parentSize = new Vector2(width, height);
         var parentPosition = Vector2.Zero;

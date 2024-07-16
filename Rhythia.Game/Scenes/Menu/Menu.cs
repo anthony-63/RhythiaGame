@@ -10,8 +10,7 @@ namespace Rhythia.Game.Scenes.Menu;
 
 public class MenuScene : IScene {
     public UiRoot TestUI = new();
-    public Label FPSLabel = new()
-    {
+    public Label FPSLabel = new() {
         TextColor = Color.Green,
         FontSpacing = 2,
         FontSize = 24,

@@ -1,15 +1,13 @@
 namespace Rhythia.Engine.Scene;
 
-public class SceneHandler
-{
+public class SceneHandler {
     List<IScene> Scenes = [];
 
     List<IScene> RemovalQueue = [];
     List<IScene> AddQueue = [];
 
 
-    public void UpdateAllScenes(Window window, double dt)
-    {
+    public void UpdateAllScenes(Window window, double dt) {
         foreach(var scene in Scenes)
             scene.Update(window, dt);
 
@@ -23,8 +21,7 @@ public class SceneHandler
         RemovalQueue.Clear();
     }
 
-    public void RenderAllScenes(Window window)
-    {
+    public void RenderAllScenes(Window window) {
         foreach(var scene in Scenes)
             scene.Render(window);
     }
@@ -37,35 +34,27 @@ public class SceneHandler
         AddQueue.Add(scene);
     }
 
-    public void RemoveSceneByType<T>() where T : IScene
-    {
-        for(int i = 0; i < Scenes.Count; i++)
-        {
-            if(Scenes[i] is T)
-            {
+    public void RemoveSceneByType<T>() where T : IScene {
+        for(int i = 0; i < Scenes.Count; i++) {
+            if(Scenes[i] is T) {
                 RemovalQueue.Add(Scenes[i]);
                 break;
             }
         }
     }
 
-    public IScene? GetSceneByType<T>() where T : IScene
-    {
-        for(int i = 0; i < Scenes.Count; i++)
-        {
+    public IScene? GetSceneByType<T>() where T : IScene {
+        for(int i = 0; i < Scenes.Count; i++) {
             if(Scenes[i] is T)
                 return (T)Scenes[i];
         }
         return null;
     }
 
-    public IScene? GetSceneByTypeIndexed<T>(int which) where T : IScene
-    {
+    public IScene? GetSceneByTypeIndexed<T>(int which) where T : IScene {
         int j = 0;
-        for(int i = 0; i < Scenes.Count; i++)
-        {
-            if(Scenes[i] is T)
-            {
+        for(int i = 0; i < Scenes.Count; i++) {
+            if(Scenes[i] is T) {
                 if(j >= which) return Scenes[i];
                 else j++;
             }

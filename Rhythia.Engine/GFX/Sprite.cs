@@ -3,18 +3,15 @@ using Raylib_cs;
 
 namespace Rhythia.Engine.GFX;
 
-public class Sprite
-{
+public class Sprite {
     public Vector3 Position;
     public Vector3 Rotation;
     public Vector2 Size;
     public Mesh Mesh;
     public Material Material;
     
-    public static Sprite MakePlane(Vector3 position, Vector3 rotation, Vector2 size, string texturePath)
-    {
-        Sprite sprite = new Sprite
-        {
+    public static Sprite MakePlane(Vector3 position, Vector3 rotation, Vector2 size, string texturePath) {
+        Sprite sprite = new Sprite {
             Position = position,
             Rotation = rotation,
             Size = size,
@@ -35,8 +32,7 @@ public class Sprite
         return sprite;
     }
 
-    public void Render()
-    {
+    public void Render() {
         var transform = Matrix4x4.CreateTranslation(Position);
         transform = Matrix4x4.Multiply(transform, Matrix4x4.CreateRotationX(Raylib.DEG2RAD * Rotation.X));
         transform = Matrix4x4.Multiply(transform, Matrix4x4.CreateRotationY(Raylib.DEG2RAD * Rotation.Y));

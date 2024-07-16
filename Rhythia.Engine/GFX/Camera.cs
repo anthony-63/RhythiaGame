@@ -4,12 +4,10 @@ using Raylib_cs;
 
 namespace Rhythia.Engine.GFX;
 
-public class Camera
-{
+public class Camera {
     Camera3D RlCamera;
 
-    public Camera(Vector3 position, float fov)
-    {
+    public Camera(Vector3 position, float fov) {
         RlCamera = new Camera3D(
             position,
             new Vector3(0, 0, 0),
@@ -19,13 +17,11 @@ public class Camera
         );
     }
 
-    public void Start()
-    {
+    public void Start() {
         Raylib.BeginMode3D(RlCamera);
     }
 
-    public void End()
-    {
+    public void End() {
         Raylib.EndMode3D();
     }
 }
