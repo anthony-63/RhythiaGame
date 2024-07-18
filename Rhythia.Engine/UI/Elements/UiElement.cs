@@ -25,10 +25,10 @@ public class UiElement : IUiElement {
             (parentSize.X * Size.X.Scale) + Size.X.Offset,
             (parentSize.Y * Size.Y.Scale) + Size.Y.Offset
         );
-        absolutePosition = new Vector2(
+        absolutePosition = Vector2.Add(new Vector2(
             (parentSize.X * Position.X.Scale) + Position.X.Offset,
             (parentSize.Y * Position.Y.Scale) + Position.Y.Offset
-        );
+        ), parentPosition);
 
         switch(Anchor) {
             case UiElementAnchor.TopLeft: break;
