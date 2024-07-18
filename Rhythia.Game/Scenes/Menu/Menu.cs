@@ -22,6 +22,11 @@ public class MenuScene : IScene {
         TestUI.Children.Add(new UiElement {
             Size = new UDim2(1, 0, 1, 0),
             Children = {
+                new ImageFrame {
+                    Size = new UDim2(0f, 100, 0f, 100),
+                    Position = new UDim2(0f, 0, 0f, 0),
+                    ImagePath = "Assets/Game/cat.png",
+                },
                 new Frame {
                     Size = new UDim2(0.2f, 0, 0.2f, 0),
                     Position = new UDim2(0.5f, 0, 0.5f, 0),

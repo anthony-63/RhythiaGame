@@ -7,7 +7,7 @@ public static class Logger {
     public static string OutputFilePath = "";
 
     public static void Init(string outputPath) {
-        Raylib.SetTraceLogLevel(TraceLogLevel.None);
+        // Raylib.SetTraceLogLevel(TraceLogLevel.None);
 
         if(File.Exists(outputPath)) File.Delete(outputPath);
 
