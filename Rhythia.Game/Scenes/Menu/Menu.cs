@@ -27,6 +27,15 @@ public class MenuScene : IScene {
                     Position = new UDim2(0.5f, 0, 0.5f, 0),
                     Anchor = UiElementAnchor.Center,
                     Color = Color.White,
+                    Children = {
+                        new Frame {
+                            Size = new UDim2(0.8f, 0, 0.8f, 0),
+                            Position = new UDim2(0.5f, 0, 0.5f, 0),
+                            Color = Color.Brown,
+                            Anchor = UiElementAnchor.Center,
+                            BorderWidth = 4,
+                        },
+                    }
                 },
                 new Label {
                     Size = new UDim2(1, 0, 1, 0),
