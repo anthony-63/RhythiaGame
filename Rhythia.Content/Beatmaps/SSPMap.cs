@@ -141,6 +141,13 @@ class SSPMapParser {
         };
     }
 
+    public byte[] GetAudioBytes(DataOffsets offsets) {
+        Index = (int)offsets.AudioOffset;
+        byte[] audio = new byte[offsets.AudioLength];
+        ReadExact(ref audio);
+        return audio;
+    }
+
     byte Read8() {
         return Buffer[Index++];
     }
@@ -211,6 +218,6 @@ public class SSPMap : IBeatmapSet {
         Mappers = parser.GetMappers();
         Difficulties = [parser.GetBeatmapFromData()];
         Path = path;
-        // AudioData = File.ReadAllBytes("Assets/singularity/music.bin");
+        AudioData = parser.GetAudioBytes(parser.GetDataOffsets());
     }
 }
