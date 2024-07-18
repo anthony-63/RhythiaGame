@@ -34,6 +34,7 @@ public class MenuScene : IScene {
                             Color = Color.Brown,
                             Anchor = UiElementAnchor.Center,
                             BorderWidth = 4,
+                            Roundness = 0.2f,
                         },
                     }
                 },

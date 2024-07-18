@@ -13,9 +13,9 @@ public class LoadingScene : IScene {
     public void Update(Window window, double dt) {
         Global.Settings = Settings.Load("Assets/settings.json");
 
-        Global.DemoMap = new SSPMap("Assets/singularity/singularity.sspm");
+        Global.DemoMap = new BeatmapSet("Assets/DemoMap");
 
         window.SceneHandler.RemoveSceneByType<LoadingScene>();
-        window.SceneHandler.AddScene(new GameScene());
+        window.SceneHandler.AddScene(new MenuScene());
     }
 }
