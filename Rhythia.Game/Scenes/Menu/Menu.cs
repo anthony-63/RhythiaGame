@@ -22,6 +22,12 @@ public class MenuScene : IScene {
         TestUI.Children.Add(new UiElement {
             Size = new UDim2(1, 0, 1, 0),
             Children = {
+                new Frame {
+                    Size = new UDim2(0.2f, 0, 0.2f, 0),
+                    Position = new UDim2(0.5f, 0, 0.5f, 0),
+                    Anchor = UiElementAnchor.Center,
+                    Color = Color.White,
+                },
                 new Label {
                     Size = new UDim2(1, 0, 1, 0),
                     Text = "Test Label 0\nNew Line",

@@ -6,6 +6,8 @@ public class UiElement : IUiElement {
     private Vector2 absoluteSize = Vector2.Zero;
     private Vector2 absolutePosition = Vector2.Zero;
 
+    public UiElementAnchor Anchor = UiElementAnchor.TopLeft;
+
     public Vector2 AbsoluteSize => absoluteSize;
     public Vector2 AbsolutePosition => absolutePosition;
 
@@ -27,6 +29,19 @@ public class UiElement : IUiElement {
             (parentSize.X * Position.X.Scale) + Position.X.Offset,
             (parentSize.Y * Position.Y.Scale) + Position.Y.Offset
         );
+
+        switch(Anchor) {
+            case UiElementAnchor.TopLeft: break;
+            case UiElementAnchor.TopMiddle: absolutePosition = Vector2.Subtract(absolutePosition, new Vector2(absoluteSize.X / 2f, 0f)); break;
+            case UiElementAnchor.TopRight: absolutePosition = Vector2.Subtract(absolutePosition, new Vector2(absoluteSize.X, 0)); break;
+            case UiElementAnchor.MiddleLeft: absolutePosition = Vector2.Subtract(absolutePosition, new Vector2(0f, absoluteSize.Y / 2f)); break;
+            case UiElementAnchor.Center: absolutePosition = Vector2.Subtract(absolutePosition, new Vector2(absoluteSize.X / 2f, absoluteSize.Y / 2f)); break;
+            case UiElementAnchor.MiddleRight: absolutePosition = Vector2.Subtract(absolutePosition, new Vector2(absoluteSize.X, absoluteSize.Y / 2f)); break;
+            case UiElementAnchor.BottomLeft: absolutePosition = Vector2.Subtract(absolutePosition, new Vector2(0f, absoluteSize.Y)); break;
+            case UiElementAnchor.BottomMiddle: absolutePosition = Vector2.Subtract(absolutePosition, new Vector2(absoluteSize.X / 2f, absoluteSize.Y)); break;
+            case UiElementAnchor.BottomRight: absolutePosition = Vector2.Subtract(absolutePosition, new Vector2(absoluteSize.X, absoluteSize.Y)); break;
+        }
+
         foreach (var element in Children) {
             element.UpdateAbsoluteValues(absoluteSize, absolutePosition);
         }
@@ -35,4 +50,16 @@ public class UiElement : IUiElement {
     public virtual void Render() {
         foreach (var element in Children) element.Render();
     }
+}
+
+public enum UiElementAnchor {
+    TopLeft,
+    TopMiddle,
+    TopRight,
+    MiddleLeft,
+    Center,
+    MiddleRight,
+    BottomLeft,
+    BottomMiddle,
+    BottomRight,
 }
