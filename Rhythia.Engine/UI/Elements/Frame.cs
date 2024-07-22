@@ -32,6 +32,5 @@ public class Frame : UiElement {
         }, Roundness, 0, Color);
 
         base.Render();
-
     }
 }

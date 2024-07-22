@@ -14,8 +14,6 @@ public class Button : UiElement {
 
     public ButtonState State = ButtonState.Normal;
 
-    private bool HandledPressed = true;
-
     private bool IsHovering() {
         return Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(), new Rectangle {
             X = AbsolutePosition.X,
