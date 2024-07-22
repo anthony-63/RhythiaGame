@@ -23,8 +23,9 @@ public class SyncAudioPlayer {
         Speed = speed;
     }
 
-    public SyncAudioPlayer(byte[] data, float volume, float speed = 1f) {
-        AudioData = data;
+    public SyncAudioPlayer(byte[]? data, float volume, float speed = 1f) {
+        if(data == null) return;
+        AudioData = data ?? [];
         AudioStream = Raylib.LoadMusicStreamFromMemory(AudioUtil.GetFileFormat(AudioData), AudioData);
         Raylib.SetMusicVolume(AudioStream, volume);
         Raylib.SetMusicPitch(AudioStream, speed);
