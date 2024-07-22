@@ -5,7 +5,7 @@ using Rhythia.Content.Settings;
 namespace Rhythia.Game;
 
 public static class Global {
-    public static IBeatmapSet? DemoMap;
+    public static IBeatmapSet? SelectedMap;
 
     public static Settings Settings = new();
 

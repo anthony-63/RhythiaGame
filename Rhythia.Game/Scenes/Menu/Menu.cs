@@ -19,8 +19,8 @@ public class MenuScene : IScene {
     };
     public Button TestButton = new() {
         Size = new UDim2(0.2f, 0, 0.2f, 0),
-        Position = new UDim2(0.5f, 0, 0.5f, 0),
-        Anchor = UiElementAnchor.Center,
+        Position = new UDim2(0f, 40, 0, 40),
+        Anchor = UiElementAnchor.TopLeft,
         NormalFrame = new Frame {
             Color = Color.Gray,
         },

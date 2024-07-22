@@ -90,10 +90,10 @@ public class NoteObjectSpawner {
 
     void LoadNotes() {
         Logger.Info("Started Note Loading");
-        OrderedNotes = new NoteObject[Global.DemoMap?.Difficulties[0].Notes.Length ?? 1];
+        OrderedNotes = new NoteObject[Global.SelectedMap?.Difficulties[0].Notes.Length ?? 1];
 
-        for(int i = 0; i < (Global.DemoMap?.Difficulties[0].Notes.Length ?? 0); i++) {
-            var noteData = Global.DemoMap?.Difficulties[0].Notes[i] ?? new Content.Beatmaps.Note();
+        for(int i = 0; i < (Global.SelectedMap?.Difficulties[0].Notes.Length ?? 0); i++) {
+            var noteData = Global.SelectedMap?.Difficulties[0].Notes[i] ?? new Content.Beatmaps.Note();
             OrderedNotes[i] = new NoteObject(noteData, i, Global.Colors[i % Global.Colors.Length]);
         }
 
