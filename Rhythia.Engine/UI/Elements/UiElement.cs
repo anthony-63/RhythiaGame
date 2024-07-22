@@ -50,6 +50,11 @@ public class UiElement : IUiElement {
     public virtual void Render() {
         foreach (var element in Children) element.Render();
     }
+
+    public void SetAbsoluteValues(Vector2 position, Vector2 size) {
+        absolutePosition = position;
+        absoluteSize = size;
+    }
 }
 
 public enum UiElementAnchor {
