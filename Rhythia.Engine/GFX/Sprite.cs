@@ -32,6 +32,26 @@ public class Sprite {
         return sprite;
     }
 
+    public static Sprite MakePlane(Vector3 position, Vector3 rotation, Vector2 size, Texture2D texture) {
+        Sprite sprite = new Sprite {
+            Position = position,
+            Rotation = rotation,
+            Size = size,
+        };
+        Material material = Raylib.LoadMaterialDefault();
+
+        Raylib.SetMaterialTexture(ref material, 0, texture);
+
+        sprite.Mesh = Raylib.GenMeshPlane(size.X, size.Y, 1, 1);
+        sprite.Material  = material;
+
+        return sprite;
+    }
+
+    public void SetTexture(Texture2D texture) {
+        Raylib.SetMaterialTexture(ref Material, 0, texture);
+    }
+
     public void Render() {
         var transform = Matrix4x4.CreateTranslation(Position);
         transform = Matrix4x4.Multiply(transform, Matrix4x4.CreateRotationX(Raylib.DEG2RAD * Rotation.X));
