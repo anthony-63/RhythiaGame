@@ -24,7 +24,7 @@ public class GameScene : IScene {
     }
 
     public void Update(Window window, double dt) {
-        if(Global.SelectedMap == null) {
+        if(Global.SelectedMap == null || Raylib.IsKeyDown(KeyboardKey.R)) {
             window.SceneHandler.RemoveSceneByType<GameScene>();
             window.SceneHandler.AddScene(new MenuScene());
             Raylib.EnableCursor();
