@@ -25,6 +25,8 @@ public class MenuScene : IScene {
 
         float padding = 0.5f;
 
+        Font font = Raylib.LoadFont("Assets/Game/PublixPixel.ttf");
+
         foreach(IBeatmapSet map in MapLoader.Maps) {
             TestUI.Children.Add(new TestMapButton() {
                 Map = map,
@@ -52,6 +54,7 @@ public class MenuScene : IScene {
                     AlignmentX = TextAlignX.Center,
                     AlignmentY = TextAlignY.Middle,
                     Text = map.Title,
+                    Font = font,
                     TextWrapped = true,
                 }
             });
