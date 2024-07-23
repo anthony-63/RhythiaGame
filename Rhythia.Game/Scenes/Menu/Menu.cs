@@ -1,3 +1,4 @@
+using System.Numerics;
 using Raylib_cs;
 using Rhythia.Content.Beatmaps;
 using Rhythia.Content.Settings;
@@ -5,6 +6,7 @@ using Rhythia.Engine;
 using Rhythia.Engine.Scene;
 using Rhythia.Engine.UI;
 using Rhythia.Engine.UI.Elements;
+using Rhythia.Game.Scenes.Loading;
 
 namespace Rhythia.Game.Scenes.Menu;
 
@@ -17,79 +19,50 @@ public class MenuScene : IScene {
         AlignmentX = TextAlignX.Left,
         AlignmentY = TextAlignY.Top,
     };
-    public Button TestButton = new() {
-        Size = new UDim2(0.2f, 0, 0.2f, 0),
-        Position = new UDim2(0f, 40, 0, 40),
-        Anchor = UiElementAnchor.TopLeft,
-        NormalFrame = new Frame {
-            Color = Color.Gray,
-        },
-        HoveringFrame = new Frame {
-            Color = Color.DarkGray,
-        },
-        PressedFrame = new Frame {
-            Color = Color.DarkPurple,
-        },
-        Label = new Label {
-            Size = new UDim2(1f, 0, 1f, 0),
-            Position = UDim2.Zero,
-            AlignmentX = TextAlignX.Center,
-            AlignmentY = TextAlignY.Middle,
-        }
-    };
-    
-
     public MenuScene() {
-        TestUI.Children.Add(new UiElement {
-            Size = new UDim2(1, 0, 1, 0),
-            Children = {
-                new ImageFrame {
-                    Size = new UDim2(0f, 100, 0f, 100),
-                    Position = new UDim2(0f, 0, 0f, 0),
-                    ImagePath = "Assets/Game/cat.png",
+        float x = 0;
+        float y = 0;
+
+        float padding = 0.5f;
+
+        foreach(IBeatmapSet map in MapLoader.Maps) {
+            TestUI.Children.Add(new TestMapButton() {
+                Map = map,
+                Size = new UDim2(0f, Raylib.GetRenderWidth() / 8 - padding * 8, 0f, Raylib.GetRenderWidth() / 8 - padding * 8),
+                Position = new UDim2(0f, ((Raylib.GetRenderWidth() / 8) * x) + padding, 0, ((Raylib.GetRenderWidth() / 8) * y) + padding),
+                Anchor = UiElementAnchor.TopLeft,
+                NormalFrame = new Frame {
+                    Color = Raylib.ColorFromNormalized(new Vector4(0.1f, 0.1f, 0.1f, 1f)),
+                    BorderWidth = 1,
+                    BorderColor = Color.LightGray,
                 },
-                // new Label {
-                //     Size = new UDim2(1, 0, 1, 0),
-                //     Text = "Test Label 0\nNew Line",
-                //     FontSize = 18,
-                //     AlignmentX = TextAlignX.Left,
-                //     AlignmentY = TextAlignY.Bottom
-                // },
-                // new Label {
-                //     Size = new UDim2(1, 0, 1, 0),
-                //     Text = "Test Label 1\nNew Line",
-                //     FontSize = 24,
-                //     AlignmentX = TextAlignX.Center,
-                //     AlignmentY = TextAlignY.Middle
-                // },
-                new Label {
-                    Size = new UDim2(1, 0, 1, 0),
-                    Text = "Test Label 2\nNew Line",
-                    FontSize = 32,
-                    AlignmentX = TextAlignX.Right,
-                    AlignmentY = TextAlignY.Top
+                HoveringFrame = new Frame {
+                    Color = Raylib.ColorFromNormalized(new Vector4(0.3f, 0.3f, 0.3f, 1f)),
+                    BorderWidth = 1,
+                    BorderColor = Color.LightGray,
                 },
-                // new Label {
-                //     Size = new UDim2(0, 96, 1, 0),
-                //     Text = "Wrapping Label testtesttesttesttesttesttesttest",
-                //     TextWrapped = true,
-                //     FontSize = 24,
-                //     AlignmentX = TextAlignX.Left,
-                //     AlignmentY = TextAlignY.Middle
-                // },
-                // new Label {
-                //     Size = new UDim2(0, 96, 1, 0),
-                //     Position = new UDim2(1, -96, 0, 0),
-                //     Text = "Wrapping Label 2 testtesttesttesttesttesttesttest",
-                //     TextWrapped = true,
-                //     FontSize = 24,
-                //     AlignmentX = TextAlignX.Right,
-                //     AlignmentY = TextAlignY.Middle
-                // }
+                PressedFrame = new Frame {
+                    Color = Raylib.ColorFromNormalized(new Vector4(0.5f, 0.5f, 0.5f, 5f)),
+                    BorderWidth = 1,
+                    BorderColor = Color.LightGray,
+                },
+                Label = new Label {
+                    Size = new UDim2(1f, 0, 1f, 0),
+                    Position = UDim2.Zero,
+                    AlignmentX = TextAlignX.Center,
+                    AlignmentY = TextAlignY.Middle,
+                    Text = map.Title,
+                    TextWrapped = true,
+                }
+            });
+            x++;
+            if(x % 8 == 0) {
+                x = 0;
+                y++;
             }
-        });
+        }
+
         TestUI.Children.Add(FPSLabel);
-        TestUI.Children.Add(TestButton);
     }
 
     public void Render(Window window) {
@@ -98,10 +71,11 @@ public class MenuScene : IScene {
 
     public void Update(Window window, double dt) {
         FPSLabel.Text = $"FPS: {Raylib.GetFPS()}";
-        switch(TestButton.State) {
-            case ButtonState.Normal: TestButton.Label.Text = "Not Hovering"; break;
-            case ButtonState.Hovering: TestButton.Label.Text = "Hovering"; break;
-            case ButtonState.Pressed: TestButton.Label.Text = "Pressed"; break;
+        foreach(UiElement element in TestUI.Children) {
+            if(element is TestMapButton) {
+                TestMapButton button = (TestMapButton)element;
+                button.CheckPressed(window);
+            }
         }
         TestUI.Update(dt);
     }
