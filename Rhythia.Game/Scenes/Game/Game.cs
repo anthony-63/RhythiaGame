@@ -19,15 +19,13 @@ public class GameScene : IScene {
     public NoteObjectSpawner? Spawner = null;
     public NoteObjectRenderer? Renderer = null;
 
-    public GameScene() {        
-        Raylib.DisableCursor();
+    public GameScene() {
+        InputManager.HideCursor();
     }
 
     public void Update(Window window, double dt) {
         if(Global.SelectedMap == null || Raylib.IsKeyDown(KeyboardKey.R)) {
-            window.SceneHandler.RemoveSceneByType<GameScene>();
-            window.SceneHandler.AddScene(new MenuScene());
-            Raylib.EnableCursor();
+            GoToMenu(window);
             return;
         }
 
@@ -38,6 +36,12 @@ public class GameScene : IScene {
         else Music.Update();
         Player.Update();
         Spawner.Update(Player.Cursor);
+    }
+
+    public void GoToMenu(Window window) {
+        window.SceneHandler.RemoveSceneByType<GameScene>();
+        window.SceneHandler.AddScene(new MenuScene());
+        InputManager.ShowCursor();
     }
 
     public void Render(Window window) {

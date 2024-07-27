@@ -10,16 +10,16 @@ public class Window {
     public Window(int width, int height, string title) {
         Raylib.InitAudioDevice();
         Logger.Info("Initialized Audio");
-        
         Raylib.InitWindow(width, height, title);
         Logger.Info("Initialized Window");
+        InputManager.BindKey([KeyboardKey.LeftAlt, KeyboardKey.Enter], InputType.PressedOnce, Raylib.ToggleBorderlessWindowed);
     }
 
     public void Run() {
         while(!Raylib.WindowShouldClose()) {
-            Raylib.PollInputEvents();
+            InputManager.Update();
             SceneHandler.UpdateAllScenes(this, Raylib.GetFrameTime());
-
+            
             Raylib.BeginDrawing();
             Raylib.ClearBackground(Color.Black);
 
